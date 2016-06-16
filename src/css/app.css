@@ -1,0 +1,9 @@
+body {
+    width: 1280px;
+    padding-top: 60px;
+    margin: auto;
+}
+
+.liked {
+    font-weight: bold
+}

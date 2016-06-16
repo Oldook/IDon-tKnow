@@ -1,0 +1,23 @@
+{
+  "name": "BackboneTraining",
+  "authors": [
+    "Ivan Kalugin <ivan.kalugin@noveogroup.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "^2.2.0",
+    "backbone.marionette": "marionette#^2.4.7",
+    "bootstrap": "^3.3.6"
+  }
+}

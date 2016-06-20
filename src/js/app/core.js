@@ -4,46 +4,42 @@ define([
     'marionette',
     'backbone',
     'jquery',
+    'firebase',
     'router/appRouter',
     'router/userRouter',
-    'model/item',
-    'collection/itemList',
-    'views/itemView',
-    'views/registrationView'
+    'collection/itemList'
 ], function (
     config,
     Cookies,
     Marionette,
     Backbone,
     $,
+    Firebase,
     appRouter,
     userRouter,
-    Item,
-    Items,
-    ItemView,
-    RegistrationView
+    itemList
 ) {
-    var app = new Marionette.Application({
+    var app = new Marionette.Application();
 
-    });
-
-    app.on('before:start', function () {
-        var RegionContainer = Marionette.LayoutView.extend({
-            el: 'body',
-
-            regions: {
-                item: '#items'
-            }
-        });
-
-        app.regions = new RegionContainer();
-    });
-    
     app.on('start', function () {
         console.log('Debug: app start');
 
         Backbone.history.start();
     });
 
-    app.start();
+    var promise = new Promise(function(resolve, reject) {
+        Firebase.initializeApp(config);
+
+        console.log('firebase promise');
+
+        Firebase.auth().onAuthStateChanged(function (user) {
+            console.log('Debug: firebase login');
+
+            resolve('aaa');
+        });
+    });
+
+    promise.then(function () {
+        app.start();
+    });
 });

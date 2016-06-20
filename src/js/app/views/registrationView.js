@@ -1,11 +1,13 @@
 define([
     'marionette',
     'backbone',
+    'firebaseApp',
     'config',
     'text!templates/registration.html'
 ], function (
     Marionette,
     Backbone,
+    Firebase,
     config,
     registrationTemplate
 ) {
@@ -23,15 +25,21 @@ define([
         },
 
         triggers: {
-            'submit @ui.form': 'add:todo:item'
+            'submit @ui.form': 'signUp'
         },
 
-        onAddTodoItem: function() {
-            console.log('submit');
-        },
+        onSignUp: function() {
+            console.log('Debug: sign up');
+            console.log('Debug username: ' + this.ui.user.val());
+            console.log('Debug password: ' + this.ui.password.val());
 
-        logClickDelete: function () {
-            console.log('click delete');
+            Firebase.auth().createUserWithEmailAndPassword(this.ui.user.val(), this.ui.password.val()).catch(function(error) {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+
+                console.log('Debug registration error code: ' + errorCode);
+                console.log('Debug registration error message: ' + errorMessage);
+            })
         }
     });
 });

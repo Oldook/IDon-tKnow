@@ -18,6 +18,10 @@
   "dependencies": {
     "requirejs": "^2.2.0",
     "backbone.marionette": "marionette#^2.4.7",
-    "bootstrap": "^3.3.6"
+    "bootstrap": "^3.3.6",
+    "js-cookie": "^2.1.2",
+    "text": "requirejs/text#^2.0.15",
+    "firebase": "^3.0.5",
+    "backbonefire": "^0.5.1"
   }
 }

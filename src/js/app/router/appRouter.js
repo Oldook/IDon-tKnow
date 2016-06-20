@@ -1,11 +1,11 @@
-define(['marionette', 'controller/itemController'], function (Marionette, itemController) {
+define(['marionette', 'controller/appController'], function (Marionette, appController) {
     console.log('Debug: app router');
 
     return new Marionette.AppRouter({
-        controller: itemController,
+        controller: appController,
         appRoutes: {
             'home': 'home',
-            'profile': 'profile'
+            '': 'index'
         }
     });
 

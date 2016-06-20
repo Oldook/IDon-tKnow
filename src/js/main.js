@@ -1,6 +1,7 @@
 requirejs.config({
     baseUrl: 'src/js',
     paths: {
+        text: '../../lib/text/text',
         jquery: '../../lib/jquery/dist/jquery',
         marionette: '../../lib/backbone.marionette/lib/backbone.marionette',
         backbone: '../../lib/backbone/backbone',
@@ -11,7 +12,9 @@ requirejs.config({
         model: 'app/model',
         collection: 'app/collection',
         views: 'app/views',
-        router: 'app/router'
+        router: 'app/router',
+        templates: 'templates',
+        layouts: 'templates/layouts'
     },
     shim: {
         'bootstrap': {

@@ -1,6 +1,16 @@
-define(['marionette', 'backbone', 'config'], function (Marionette, Backbone, config) {
+define([
+    'marionette',
+    'backbone',
+    'config',
+    'text!templates/item.html'
+], function (
+    Marionette,
+    Backbone,
+    config,
+    itemTemplate
+) {
     return Marionette.LayoutView.extend({
-        template: '#item',
+        template: itemTemplate,
 
         events: {
             "click .delete": "logClickDelete"

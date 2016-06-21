@@ -31,13 +31,16 @@ define([
         },
 
         onLogin: function() {
-            Firebase.auth().signInWithEmailAndPassword(this.ui.user.val(), this.ui.password.val()).catch(function (error) {
+            Firebase.auth().signInWithEmailAndPassword(
+                this.ui.user.val(),
+                this.ui.password.val()
+            ).catch(function (error) {
                 var errorCode = error.code;
                 var errorMessage = error.message;
 
                 console.log(errorCode);
                 console.log(errorMessage);
-            }).then(function (){
+            }).then(function () {
                 Backbone.history.navigate('home', true);
             });
         },

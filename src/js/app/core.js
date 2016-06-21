@@ -7,6 +7,7 @@ define([
     'firebase',
     'router/appRouter',
     'router/userRouter',
+    'router/itemRouter',
     'collection/itemList'
 ], function (
     config,
@@ -17,6 +18,7 @@ define([
     Firebase,
     appRouter,
     userRouter,
+    itemRouter,
     itemList
 ) {
     var app = new Marionette.Application();
@@ -35,7 +37,7 @@ define([
         Firebase.auth().onAuthStateChanged(function (user) {
             console.log('Debug: firebase login');
 
-            resolve('aaa');
+            resolve();
         });
     });
 

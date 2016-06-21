@@ -1,29 +1,21 @@
 define([
-    'jquery',
+    'backbone',
     'marionette',
-    'text!layouts/appLayout.html'
+    'views/layoutView'
 ], function (
-    $,
+    Backbone,
     Marionette,
-    appLayout
+    AppLayoutView
 ) {
-    console.log('Debug: app controller');
-
-    var AppLayoutView = Marionette.LayoutView.extend({
-        el: '#content',
-        template: appLayout
-    });
-
     var AppController = Marionette.Controller.extend({
-        home: function () {
-            console.log('Debug: home');
-
-            var layout = new AppLayoutView();
-            layout.render();
+        initialize: function () {
+            this.layout = new AppLayoutView()
         },
-
+        home: function () {
+            this.layout.render();
+        },
         index: function () {
-            console.log('Debug: index');
+            Backbone.history.navigate('home', true);
         }
     });
 

@@ -6,7 +6,7 @@ define([
     'router/appRouter',
     'views/registrationView',
     'views/loginView',
-    'text!layouts/appLayout.html'
+    'views/layoutView'
 ], function (
     $,
     Marionette,
@@ -15,38 +15,24 @@ define([
     appRouter,
     registrationView,
     loginView,
-    appLayout
+    AppLayoutView
 ) {
-    console.log('Debug: user controller');
-
-    var AppLayoutView = Marionette.LayoutView.extend({
-        el: '#content',
-        template: appLayout,
-
-        regions: {
-            items: '#items'
-        }
-    });
-
-    var ItemController = Marionette.Controller.extend({
+    var UserController = Marionette.Controller.extend({
+        initialize: function () {
+            this.layout = new AppLayoutView()
+        },
         registration: function () {
-            console.log('Debug: registration');
-
-            var layout = new AppLayoutView();
-            layout.render();
-            layout.items.show(new registrationView());
+            this.layout.render();
+            this.layout.items.show(new registrationView());
         },
         login: function () {
-            console.log('Debug: login');
-
-            var layout = new AppLayoutView();
-            layout.render();
-            layout.items.show(new loginView());
+            this.layout.render();
+            this.layout.items.show(new loginView());
         },
         logout: function () {
             Firebase.auth().signOut().then(function() {
                 Backbone.history.navigate('home', true);
-            }, function(error) {
+            }, function (error) {
                 console.log('Debug: sign out error');
                 console.log('Debug registration error code: ' + error.code);
                 console.log('Debug registration error message: ' + error.message);
@@ -54,5 +40,5 @@ define([
         }
     });
 
-    return new ItemController();
+    return new UserController();
 });

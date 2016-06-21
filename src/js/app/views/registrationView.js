@@ -1,7 +1,7 @@
 define([
     'marionette',
     'backbone',
-    'firebaseApp',
+    'firebase',
     'config',
     'text!templates/registration.html'
 ], function (

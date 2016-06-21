@@ -1,9 +1,11 @@
 define([
+    'jquery',
     'marionette',
     'backbone',
     'config',
     'text!templates/item.html'
 ], function (
+    $,
     Marionette,
     Backbone,
     config,
@@ -13,11 +15,19 @@ define([
         template: itemTemplate,
 
         events: {
-            "click .delete": "logClickDelete"
+            "click .delete": "clickDelete",
+            "click .like": 'clickLike'
         },
 
-        logClickDelete: function () {
-            console.log('click delete');
+        clickDelete: function (e) {
+            e.preventDefault();
+            Backbone.history.navigate('items/' + $(e.currentTarget).data('id') + '/delete', true);
+        },
+
+        clickLike: function (e) {
+            e.preventDefault();
+            console.log($(e.currentTarget).data('id'));
+            console.log('click like');
         }
     });
 });

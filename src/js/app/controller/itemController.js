@@ -1,25 +1,44 @@
 define([
     'jquery',
     'marionette',
-    'firebaseApp',
-    'collection/itemList'
+    'firebase',
+    'collection/itemList',
+    'views/itemView',
+    'views/layoutView',
+    'model/item',
+    'views/itemListView'
 ], function (
     $,
     Marionette,
     Firebase,
-    ItemList
+    ItemList,
+    ItemView,
+    LayoutView,
+    Item,
+    ItemListView
 ) {
-    console.log('Debug: item controller');
-
     var ItemController = Marionette.Controller.extend({
-        home: function () {
+        initialize: function () {
+            this.layout = new LayoutView();
+
+            this.itemList = new ItemList();
+            this.itemList.fetch()
+        },
+        items: function () {
             if (Firebase.auth().currentUser) {
-                var itemList = new ItemList();
-                console.log(itemList.fetch());
+                this.layout.render();
+                this.layout.items.show(new ItemListView({collection: this.itemList}))
             }
         },
-        profile: function () {
-            console.log('Debug: profile');
+        deleteItem: function (id) {
+            var item = this.itemList.get(id);
+            item.destroy({
+                success: function () {
+                    console.log('item with id ' + id + ' destroyed');
+                }
+            });
+
+            Backbone.history.navigate('items', true);
         }
     });
 

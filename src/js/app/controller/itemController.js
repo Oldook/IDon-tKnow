@@ -6,7 +6,8 @@ define([
     'views/itemView',
     'views/layoutView',
     'model/item',
-    'views/itemListView'
+    'views/itemListView',
+    'views/editView'
 ], function (
     $,
     Marionette,
@@ -15,7 +16,8 @@ define([
     ItemView,
     LayoutView,
     Item,
-    ItemListView
+    ItemListView,
+    EditView
 ) {
     var ItemController = Marionette.Controller.extend({
         initialize: function () {
@@ -24,12 +26,19 @@ define([
             this.itemList = new ItemList();
             this.itemList.fetch()
         },
-        items: function () {
-            if (Firebase.auth().currentUser) {
+
+        showItems: function () {
+            var user = Firebase.auth().currentUser;
+            if (user) {
                 this.layout.render();
-                this.layout.items.show(new ItemListView({collection: this.itemList}))
+                this.layout.items.show(new ItemListView({
+                        collection: this.itemList,
+                        user: user.providerData[0].email
+                    })
+                );
             }
         },
+
         deleteItem: function (id) {
             var item = this.itemList.get(id);
             item.destroy({
@@ -39,6 +48,29 @@ define([
             });
 
             Backbone.history.navigate('items', true);
+        },
+
+        likeItem: function (id) {
+            var item = this.itemList.get(id);
+            item.like(Firebase.auth().currentUser.providerData[0].email);
+            item.save({
+                success: function () {
+                    console.log('item with id ' + id + ' updated');
+                }
+            });
+
+            Backbone.history.navigate('items', true);
+        },
+
+        edit: function (id) {
+            var item = this.itemList.get(id);
+
+            if (Firebase.auth().currentUser) {
+                this.layout.render();
+                this.layout.items.show(new EditView({
+                    model: item
+                }))
+            }
         }
     });
 

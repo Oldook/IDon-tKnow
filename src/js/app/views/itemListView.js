@@ -10,6 +10,11 @@ define([
     ItemView
 ) {
     return Marionette.CollectionView.extend({
-        childView: ItemView
+        childView: ItemView,
+        childViewOptions: function () {
+            return {
+                "user": this.options.user
+            }
+        }
     });
 });

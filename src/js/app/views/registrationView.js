@@ -1,10 +1,12 @@
 define([
+    'jquery',
     'marionette',
     'backbone',
     'firebase',
     'config',
     'text!templates/registration.html'
 ], function (
+    $,
     Marionette,
     Backbone,
     Firebase,
@@ -13,10 +15,6 @@ define([
 ) {
     return Marionette.LayoutView.extend({
         template: registrationTemplate,
-
-        regions: {
-            content: "#items"
-        },
 
         ui: {
             user: '#user',
@@ -28,18 +26,26 @@ define([
             'submit @ui.form': 'signUp'
         },
 
+        events: {
+            'click #close': 'alertClose'
+        },
+
         onSignUp: function() {
-            console.log('Debug: sign up');
-            console.log('Debug username: ' + this.ui.user.val());
-            console.log('Debug password: ' + this.ui.password.val());
+            Firebase.auth().createUserWithEmailAndPassword(
+                this.ui.user.val(),
+                this.ui.password.val()
+            ).then(function () {
+                Backbone.history.navigate('items', true);
+            }).catch(function(error) {
+                var alert = $('#registrationAlert');
+                alert.find('#alertMessage').text(error.message);
+                alert.show();
+            });
+        },
 
-            Firebase.auth().createUserWithEmailAndPassword(this.ui.user.val(), this.ui.password.val()).catch(function(error) {
-                var errorCode = error.code;
-                var errorMessage = error.message;
-
-                console.log('Debug registration error code: ' + errorCode);
-                console.log('Debug registration error message: ' + errorMessage);
-            })
+        alertClose: function (e) {
+            e.preventDefault();
+            $('#registrationAlert').hide();
         }
     });
 });

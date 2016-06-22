@@ -6,7 +6,16 @@
             </div>
             <div class="panel-body"><%- description %></div>
             <div class="panel-footer">
-                <a class="like pull-right" href="#" data-id="<%- id %>">Likes: <%- like %></a>
+                <a class="edit pull-left" href="#" data-id="<%- id %>">edit</a>
+                <a class="like pull-right" href="#" data-id="<%- id %>">
+                    <%
+                        if (ifUserLiked) {
+                            %><b>Likes: <%- likes.length %></b><%
+                        } else {
+                            %>Likes: <%- likes.length %><%
+                        }
+                    %>
+                </a>
                 <div class="clearfix"></div>
             </div>
         </div>

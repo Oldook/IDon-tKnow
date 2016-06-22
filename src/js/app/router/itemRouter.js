@@ -8,8 +8,10 @@ define([
     return new Marionette.AppRouter({
         controller: appController,
         appRoutes: {
-            'items': 'items',
-            'items/:id/delete': 'deleteItem'
+            'items': 'showItems',
+            'items/:id/delete': 'deleteItem',
+            'items/:id/like': 'likeItem',
+            'items/:id/edit': 'edit'
         }
     });
 });

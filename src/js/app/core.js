@@ -7,8 +7,7 @@ define([
     'firebase',
     'router/appRouter',
     'router/userRouter',
-    'router/itemRouter',
-    'collection/itemList'
+    'router/itemRouter'
 ], function (
     config,
     Cookies,
@@ -18,8 +17,7 @@ define([
     Firebase,
     appRouter,
     userRouter,
-    itemRouter,
-    itemList
+    itemRouter
 ) {
     var app = new Marionette.Application();
 

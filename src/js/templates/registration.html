@@ -3,7 +3,7 @@
         <form class="registration-from">
             <fieldset class="form-group">
                 <label for="user">Username</label>
-                <input type="user" class="form-control" id="user" placeholder="Enter username">
+                <input type="text" class="form-control" id="user" placeholder="Enter username">
             </fieldset>
             <fieldset class="form-group">
                 <label for="password">Password</label>
@@ -11,5 +11,9 @@
             </fieldset>
             <button type="submit" class="btn btn-primary">SignUp</button>
         </form>
+        <div id="registrationAlert" class="alert alert-danger fade in">
+            <a href="#" id="close" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
+            <div id="alertMessage"><strong>Danger!</strong> This alert box indicates a dangerous or potentially negative action.</div>
+        </div>
     </div>
 </script>

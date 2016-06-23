@@ -1,7 +1,7 @@
-define(['backbone', 'underscore', 'config'], function (Backbone, _, config) {
+define(['backbone', 'underscore', 'config', 'firebase'], function (Backbone, _, config, firebase) {
     return Backbone.Model.extend({
         url: function () {
-            return config.databaseURL + '/items/' + this.id + '.json';
+            return config.databaseURL + '/items/' + this.id + '.json?auth=' + firebase.auth().currentUser.Xc;
         },
 
         defaults: {
@@ -17,6 +17,10 @@ define(['backbone', 'underscore', 'config'], function (Backbone, _, config) {
         },
 
         like: function (user) {
+            if (this.attributes.likes == undefined) {
+                this.set('likes', []);
+            }
+
             var likes = this.attributes.likes;
 
             if (!this.ifUserLiked(user)) {

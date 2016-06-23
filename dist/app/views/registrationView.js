@@ -1,0 +1,1 @@
+define(["jquery","marionette","backbone","firebase","text!templates/registration.html"],function(e,t,r,i,s){return t.LayoutView.extend({template:s,ui:{user:"#user",form:"form",password:"#password"},triggers:{"submit @ui.form":"signUp"},events:{"click #close":"alertClose"},alertClose:function(t){t.preventDefault(),e("#registrationAlert").hide()}})});

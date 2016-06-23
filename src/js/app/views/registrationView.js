@@ -3,14 +3,12 @@ define([
     'marionette',
     'backbone',
     'firebase',
-    'config',
     'text!templates/registration.html'
 ], function (
     $,
     Marionette,
     Backbone,
     Firebase,
-    config,
     registrationTemplate
 ) {
     return Marionette.LayoutView.extend({
@@ -28,19 +26,6 @@ define([
 
         events: {
             'click #close': 'alertClose'
-        },
-
-        onSignUp: function() {
-            Firebase.auth().createUserWithEmailAndPassword(
-                this.ui.user.val(),
-                this.ui.password.val()
-            ).then(function () {
-                Backbone.history.navigate('items', true);
-            }).catch(function(error) {
-                var alert = $('#registrationAlert');
-                alert.find('#alertMessage').text(error.message);
-                alert.show();
-            });
         },
 
         alertClose: function (e) {

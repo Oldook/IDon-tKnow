@@ -6,10 +6,7 @@ requirejs.config({
         jquery: '../../lib/jquery/dist/jquery',
         marionette: '../../lib/backbone.marionette/lib/backbone.marionette',
         backbone: '../../lib/backbone/backbone',
-        'backbone.wreqr': '../../lib/backbone.wreqr/lib/backbone.wreqr',
-        backboneFire: '../../lib/backbonefire/dist/backbonefire',
         underscore: '../../lib/underscore/underscore',
-        cookie: '../../lib/js-cookie/src/js.cookie',
         bootstrap: '../../lib/bootstrap/dist/js/bootstrap',
         controller: 'app/controller',
         model: 'app/model',
@@ -35,12 +32,6 @@ requirejs.config({
                 'jquery'
             ],
             exports: 'Backbone'
-        },
-        'backboneFire': {
-            deps: [
-                'backbone',
-                'firebase'
-            ]
         }
     }
 });

@@ -1,0 +1,1 @@
+define(["config","backbone","underscore","model/item"],function(n,e,t,o){return e.Collection.extend({model:o,url:function(){return n.databaseURL+"/items.json"},parse:function(n){return t.without(n,null)},getLastId:function(){var n=t.max(this.models,function(n){return n.id});return n.id}})});

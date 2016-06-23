@@ -1,19 +1,15 @@
 define([
     'config',
-    'cookie',
     'marionette',
     'backbone',
-    'jquery',
     'firebase',
     'router/appRouter',
     'router/userRouter',
     'router/itemRouter'
 ], function (
     config,
-    Cookies,
     Marionette,
     Backbone,
-    $,
     Firebase,
     appRouter,
     userRouter,

@@ -1,0 +1,1 @@
+define(["marionette","text!layouts/appLayout.html"],function(e,t){return e.LayoutView.extend({el:"body",template:t,regions:{items:"#items"}})});

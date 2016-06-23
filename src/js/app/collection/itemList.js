@@ -16,6 +16,13 @@ define([
         },
         parse: function (response) {
             return _.without(response, null);
+        },
+        getLastId: function () {
+            var maxID = _.max(this.models, function (model) {
+                return model.id;
+            });
+
+            return maxID.id;
         }
     });
 });

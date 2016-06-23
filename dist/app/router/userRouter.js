@@ -1,0 +1,1 @@
+define(["marionette","controller/userController"],function(o,r){return new o.AppRouter({controller:r,appRoutes:{registration:"registration",login:"login",logout:"logout"}})});

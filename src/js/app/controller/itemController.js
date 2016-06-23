@@ -1,23 +1,23 @@
 define([
-    'jquery',
     'marionette',
+    'underscore',
     'firebase',
     'collection/itemList',
-    'views/itemView',
-    'views/layoutView',
     'model/item',
+    'views/layoutView',
     'views/itemListView',
-    'views/editView'
+    'views/editView',
+    'views/createView'
 ], function (
-    $,
     Marionette,
+    _,
     Firebase,
     ItemList,
-    ItemView,
-    LayoutView,
     Item,
+    LayoutView,
     ItemListView,
-    EditView
+    EditView,
+    CreateView
 ) {
     var ItemController = Marionette.Controller.extend({
         initialize: function () {
@@ -40,36 +40,79 @@ define([
         },
 
         deleteItem: function (id) {
-            var item = this.itemList.get(id);
-            item.destroy({
-                success: function () {
-                    console.log('item with id ' + id + ' destroyed');
-                }
-            });
+            if (Firebase.auth().currentUser) {
+                var item = this.itemList.get(id);
+                item.destroy({
+                    success: function () {
+                        console.log('item with id ' + id + ' destroyed');
+                    }
+                });
+            }
 
             Backbone.history.navigate('items', true);
         },
 
         likeItem: function (id) {
-            var item = this.itemList.get(id);
-            item.like(Firebase.auth().currentUser.providerData[0].email);
-            item.save({
-                success: function () {
-                    console.log('item with id ' + id + ' updated');
-                }
-            });
+            if (Firebase.auth().currentUser) {
+                var item = this.itemList.get(id);
+                item.like(Firebase.auth().currentUser.providerData[0].email);
+                item.save({
+                    success: function () {
+                        console.log('item with id ' + id + ' updated');
+                    }
+                });
+            }
 
             Backbone.history.navigate('items', true);
         },
 
-        edit: function (id) {
-            var item = this.itemList.get(id);
-
+        editItem: function (id) {
             if (Firebase.auth().currentUser) {
+                var item = this.itemList.get(id);
+
+                var view = new EditView({ model: item });
+                view.on('edit', function (e) {
+                    var newTitle = e.view.ui.title.val();
+                    var newDescription = e.view.ui.description.val();
+
+                    if (newTitle != '') {
+                        item.set('title', newTitle);
+                    }
+
+                    if (newDescription != '') {
+                        item.set('description', newDescription);
+                    }
+
+                    item.save();
+
+                    Backbone.history.navigate('items', true);
+                });
+
                 this.layout.render();
-                this.layout.items.show(new EditView({
-                    model: item
-                }))
+                this.layout.items.show(view);
+            }
+        },
+
+        createItem: function () {
+            if (Firebase.auth().currentUser) {
+                var itemList = this.itemList;
+
+                var view= new CreateView();
+                view.on('create', function (e) {
+                    var item = new Item({
+                        title: e.view.ui.title.val(),
+                        description: e.view.ui.description.val(),
+                        id: itemList.getLastId() + 1
+                    });
+
+                    itemList.push(item);
+                    item.save();
+
+                    Backbone.history.navigate('items', true);
+                });
+
+                this.layout.render();
+                this.layout.items.show(view);
             }
         }
     });

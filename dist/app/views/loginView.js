@@ -1,0 +1,1 @@
+define(["marionette","backbone","firebase","text!templates/login.html"],function(e,t,r,i){return e.LayoutView.extend({template:i,ui:{user:"#user",form:"form",password:"#password"},triggers:{"submit @ui.form":"login"}})});

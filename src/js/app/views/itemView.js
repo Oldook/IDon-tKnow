@@ -2,13 +2,11 @@ define([
     'jquery',
     'marionette',
     'backbone',
-    'config',
     'text!templates/item.html'
 ], function (
     $,
     Marionette,
     Backbone,
-    config,
     itemTemplate
 ) {
     return Marionette.LayoutView.extend({

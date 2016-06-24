@@ -1,7 +1,7 @@
 define(['backbone', 'underscore', 'config', 'firebase'], function (Backbone, _, config, firebase) {
     return Backbone.Model.extend({
         url: function () {
-            return config.databaseURL + '/items/' + this.id + '.json?auth=' + firebase.auth().currentUser.Xc;
+            return config.databaseURL + '/items/' + this.id + '?uid=' + firebase.auth().currentUser.Xc;
         },
 
         defaults: {

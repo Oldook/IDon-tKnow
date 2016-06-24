@@ -12,14 +12,14 @@ define([
     return Backbone.Collection.extend({
         model: Item,
         url: function () {
-            return config.databaseURL + '/items.json';
+            return config.databaseURL + '/items';
         },
         parse: function (response) {
             return _.without(response, null);
         },
         getLastId: function () {
             var maxID = _.max(this.models, function (model) {
-                return model.id;
+                return parseInt(model.id);
             });
 
             return maxID.id;

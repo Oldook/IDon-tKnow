@@ -7,7 +7,8 @@ define([
     'views/layoutView',
     'views/itemListView',
     'views/editView',
-    'views/createView'
+    'views/createView',
+    'service/itemService'
 ], function (
     Marionette,
     _,
@@ -17,7 +18,8 @@ define([
     LayoutView,
     ItemListView,
     EditView,
-    CreateView
+    CreateView,
+    ItemService
 ) {
     var ItemController = Marionette.Controller.extend({
         initialize: function () {
@@ -56,7 +58,8 @@ define([
             if (Firebase.auth().currentUser) {
                 var item = this.itemList.get(id);
                 item.like(Firebase.auth().currentUser.providerData[0].email);
-                item.save({
+                item.save({likes: item.get('likes')}, {
+                    patch: true,
                     success: function () {
                         console.log('item with id ' + id + ' updated');
                     }
@@ -99,16 +102,19 @@ define([
 
                 var view= new CreateView();
                 view.on('create', function (e) {
-                    var item = new Item({
-                        title: e.view.ui.title.val(),
-                        description: e.view.ui.description.val(),
-                        id: itemList.getLastId() + 1
-                    });
-
-                    itemList.push(item);
-                    item.save();
-
-                    Backbone.history.navigate('items', true);
+                    ItemService.create(
+                        {
+                            title: e.view.ui.title.val(),
+                            description: e.view.ui.description.val()
+                        },
+                        function (model, response, options) {
+                            itemList.push(model);
+                            Backbone.history.navigate('items', true);
+                        },
+                        function (model, response, options) {
+                            console.log(response);
+                        }
+                    );
                 });
 
                 this.layout.render();

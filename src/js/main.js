@@ -14,7 +14,8 @@ requirejs.config({
         views: 'app/views',
         router: 'app/router',
         templates: 'templates',
-        layouts: 'templates/layouts'
+        layouts: 'templates/layouts',
+        service: 'app/service'
     },
     shim: {
         'bootstrap': {

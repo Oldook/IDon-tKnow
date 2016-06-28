@@ -1,24 +1,22 @@
 define([
     'marionette',
-    'underscore',
     'firebase',
     'collection/itemList',
-    'model/item',
     'views/layoutView',
     'views/itemListView',
     'views/editView',
     'views/createView',
+    'views/messageView',
     'service/itemService'
 ], function (
     Marionette,
-    _,
     Firebase,
     ItemList,
-    Item,
     LayoutView,
     ItemListView,
     EditView,
     CreateView,
+    MessageView,
     ItemService
 ) {
     var ItemController = Marionette.Controller.extend({
@@ -29,47 +27,70 @@ define([
             this.itemList.fetch()
         },
 
+        showMessage: function (message) {
+            this.layout.content.show(
+                new MessageView({
+                    message: message
+                })
+            );
+        },
+
         showItems: function () {
+            this.layout.render();
+
             var user = Firebase.auth().currentUser;
             if (user) {
-                this.layout.render();
-                this.layout.items.show(new ItemListView({
+                this.layout.content.show(
+                    new ItemListView({
                         collection: this.itemList,
                         user: user.providerData[0].email
                     })
                 );
+            } else {
+                this.showMessage('You need to login');
             }
         },
 
         deleteItem: function (id) {
+            this.layout.render();
+
             if (Firebase.auth().currentUser) {
                 var item = this.itemList.get(id);
-                item.destroy({
-                    success: function () {
-                        console.log('item with id ' + id + ' destroyed');
+                ItemService.delete(item,
+                    function (model, response, options) {
+                        Backbone.history.navigate('items', true);
+                    },
+                    function (model, response, options) {
+                        Backbone.history.navigate('items', true);
                     }
-                });
+                );
+            } else {
+                this.showMessage('You need to login');
             }
-
-            Backbone.history.navigate('items', true);
         },
 
         likeItem: function (id) {
+            this.layout.render();
+
             if (Firebase.auth().currentUser) {
                 var item = this.itemList.get(id);
                 item.like(Firebase.auth().currentUser.providerData[0].email);
-                item.save({likes: item.get('likes')}, {
-                    patch: true,
-                    success: function () {
-                        console.log('item with id ' + id + ' updated');
+                ItemService.edit(item, {likes: item.get('likes')},
+                    function (model, response, options) {
+                        Backbone.history.navigate('items', true);
+                    },
+                    function (model, response, options) {
+                        Backbone.history.navigate('items', true);
                     }
-                });
+                );
+            } else {
+                this.showMessage('You need to login');
             }
-
-            Backbone.history.navigate('items', true);
         },
 
         editItem: function (id) {
+            this.layout.render();
+
             if (Firebase.auth().currentUser) {
                 var item = this.itemList.get(id);
 
@@ -78,25 +99,37 @@ define([
                     var newTitle = e.view.ui.title.val();
                     var newDescription = e.view.ui.description.val();
 
-                    if (newTitle != '') {
-                        item.set('title', newTitle);
+                    var changes = {};
+
+                    if ( newTitle != '') {
+                        changes.title = newTitle;
                     }
 
-                    if (newDescription != '') {
-                        item.set('description', newDescription);
+                    if ( newDescription != '') {
+                        changes.description = newDescription;
                     }
 
-                    item.save();
+                    console.log(changes);
 
-                    Backbone.history.navigate('items', true);
+                    ItemService.edit(item, changes,
+                        function (model, response, options) {
+                            Backbone.history.navigate('items', true);
+                        },
+                        function (model, response, options) {
+                            view.showAlert(response.responseText);
+                        }
+                    );
                 });
 
-                this.layout.render();
-                this.layout.items.show(view);
+                this.layout.content.show(view);
+            } else {
+                this.showMessage('You need to login as admin');
             }
         },
 
         createItem: function () {
+            this.layout.render();
+
             if (Firebase.auth().currentUser) {
                 var itemList = this.itemList;
 
@@ -112,13 +145,14 @@ define([
                             Backbone.history.navigate('items', true);
                         },
                         function (model, response, options) {
-                            console.log(response);
+                            view.showAlert(response.responseText);
                         }
                     );
                 });
 
-                this.layout.render();
-                this.layout.items.show(view);
+                this.layout.content.show(view);
+            } else {
+                this.showMessage('You need to login as admin');
             }
         }
     });

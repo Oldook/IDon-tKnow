@@ -28,9 +28,12 @@ define([
             'click #close': 'alertClose'
         },
 
-        alertClose: function (e) {
-            e.preventDefault();
-            $('#registrationAlert').hide();
+        showAlert: function (err) {
+            var alert = $('#registrationAlert');
+            alert
+                .find('#alertMessage')
+                .text(err);
+            alert.show();
         }
     });
 });

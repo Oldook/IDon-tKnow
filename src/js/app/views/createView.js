@@ -27,6 +27,14 @@ define([
         cancel: function(e) {
             e.preventDefault();
             Backbone.history.navigate('items', true);
+        },
+
+        showAlert: function (err) {
+            var alert = $('#createAlert');
+            alert
+                .find('#alertMessage')
+                .text(err);
+            alert.show();
         }
     });
 });

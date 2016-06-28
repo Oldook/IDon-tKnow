@@ -10,7 +10,16 @@ define([
         template: appLayout,
 
         regions: {
-            items: '#items'
+            content: '#content',
+            alert: '#alert'
+        },
+
+        events: {
+            'click .close' : 'clickClose'
+        },
+
+        clickClose: function (e) {
+            $(e.currentTarget).closest('.alert').hide();
         }
     });
 });

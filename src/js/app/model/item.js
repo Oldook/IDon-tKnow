@@ -1,9 +1,6 @@
 define(['backbone', 'underscore', 'config', 'firebase'], function (Backbone, _, config, firebase) {
     return Backbone.Model.extend({
         url: function () {
-            console.log(firebase.auth().currentUser.Xc);
-            console.log(firebase.auth().currentUser.uid);
-
             return this.id == undefined ?
                 config.databaseURL + '/items/?token=' + firebase.auth().currentUser.Xc :
                 config.databaseURL + '/items/' + this.id + '?token=' + firebase.auth().currentUser.Xc;

@@ -4,21 +4,33 @@ define([
     'firebase',
     'views/registrationView',
     'views/loginView',
-    'views/layoutView'
+    'views/layoutView',
+    'views/messageView'
 ], function (
     Marionette,
     Backbone,
     Firebase,
     RegistrationView,
     LoginView,
-    AppLayoutView
+    AppLayoutView,
+    MessageView
 ) {
     var UserController = Marionette.Controller.extend({
         initialize: function () {
             this.layout = new AppLayoutView();
         },
 
+        showMessage: function (message) {
+            this.layout.content.show(
+                new MessageView({
+                    message: message
+                })
+            );
+        },
+
         registration: function () {
+            this.layout.render();
+            
             if (!Firebase.auth().currentUser) {
                 var view = new RegistrationView();
                 view.on('signUp', function (e) {
@@ -28,20 +40,19 @@ define([
                     ).then(function () {
                         Backbone.history.navigate('items', true);
                     }).catch(function(error) {
-                        var alert = $('#registrationAlert');
-                        alert.find('#alertMessage').text(error.message);
-                        alert.show();
+                        view.showAlert(error.message);
                     });
                 });
 
-                this.layout.render();
-                this.layout.items.show(view);
+                this.layout.content.show(view);
             } else {
-                Backbone.history.navigate('items', true);
+                this.showMessage('You have already logged in');
             }
         },
 
         login: function () {
+            this.layout.render();
+
             if (!Firebase.auth().currentUser) {
                 var view = new LoginView();
                 view.on('login', function (e) {
@@ -51,18 +62,13 @@ define([
                     ).then(function () {
                         Backbone.history.navigate('items', true);
                     }).catch(function (error) {
-                        var errorCode = error.code;
-                        var errorMessage = error.message;
-
-                        console.log(errorCode);
-                        console.log(errorMessage);
+                        view.showAlert(error.message);
                     });
                 });
 
-                this.layout.render();
-                this.layout.items.show(view);
+                this.layout.content.show(view);
             } else {
-                Backbone.history.navigate('items', true);
+                this.showMessage('You have already logged in');
             }
         },
 
@@ -72,7 +78,7 @@ define([
                     Backbone.history.navigate('login', true);
                 });
             } else {
-                Backbone.history.navigate('items', true);
+                this.showMessage('You need to login');
             }
         }
     });

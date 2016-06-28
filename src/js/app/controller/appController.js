@@ -1,11 +1,15 @@
 define([
     'backbone',
     'marionette',
-    'views/layoutView'
+    'views/layoutView',
+    'views/messageView',
+    'firebase'
 ], function (
     Backbone,
     Marionette,
-    AppLayoutView
+    AppLayoutView,
+    MessageView,
+    Firebase
 ) {
     var AppController = Marionette.Controller.extend({
         initialize: function () {
@@ -13,33 +17,20 @@ define([
         },
 
         home: function () {
-            this.layout.render();
+            if (Firebase.auth().currentUser) {
+                Backbone.history.navigate('items', true);
+            } else {
+                this.layout.render();
+                this.layout.content.show(
+                    new MessageView({
+                        message: 'Please, log in'
+                    })
+                );
+            }
         },
 
         index: function () {
             Backbone.history.navigate('home', true);
-        },
-
-        edit: function (id) {
-            if (Firebase.auth().currentUser) {
-                var item = this.itemList.get(id);
-
-                this.layout.render();
-                this.layout.items.show(new EditView({
-                    model: item
-                }))
-            }
-        },
-
-        create: function () {
-            if (Firebase.auth().currentUser) {
-                var item = this.itemList.get(id);
-
-                this.layout.render();
-                this.layout.items.show(new CreateView({
-
-                }))
-            }
         }
     });
 

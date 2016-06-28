@@ -20,6 +20,14 @@ define([
 
         triggers: {
             'submit @ui.form': 'login'
+        },
+
+        showAlert: function (err) {
+            var alert = $('#loginAlert');
+            alert
+                .find('#alertMessage')
+                .text(err);
+            alert.show();
         }
     });
 });

@@ -1,1 +1,0 @@
-define(["marionette","controller/appController"],function(e,o){return new e.AppRouter({controller:o,appRoutes:{home:"home","":"index"}})});

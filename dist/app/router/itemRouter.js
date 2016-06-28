@@ -1,1 +1,0 @@
-define(["marionette","controller/itemController"],function(e,t){return new e.AppRouter({controller:t,appRoutes:{items:"showItems","items/:id/delete":"deleteItem","items/:id/like":"likeItem","items/:id/edit":"editItem","items/create":"createItem"}})});
